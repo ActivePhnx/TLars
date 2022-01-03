@@ -18,6 +18,7 @@ crec_scraper.py:
 
 	// One Day at a time
 	// Run this script in loop to get historical data
+	// lxml HTML -- https://lxml.de/parsing.html
 
 	API get in .zip (404 Interupt)			// Perhaps Create preliminary db with all valid dates and feed that to loop
 	Using Zip library read contents from htm(html) files
