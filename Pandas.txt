@@ -1,7 +1,29 @@
-Pandas:
-
 Code:
 https://osf.io/ax5q7/
 
 Paper:
 https://www.tandfonline.com/doi/full/10.1080/10572252.2019.1601774
+
+
+API Key:
+tYnDbpDQK4gN2noz8LA5faR31djqNo7tgiKObIkN
+
+GovInfo API:
+https://www.govinfo.gov/features/api
+https://github.com/usgpo/link-service
+https://www.govinfo.gov/link-docs/
+
+
+crec_scraper.py:
+
+	// One Day at a time
+	// Run this script in loop to get historical data
+
+	API get in .zip (404 Interupt)			// Perhaps Create preliminary db with all valid dates and feed that to loop
+	Using Zip library read contents from htm(html) files
+	Add htm Name to READ Array
+	
+	Add htm content to sqlite3 local db
+
+	SQlite3:  // More Research Needed
+		db embedded into the end program
