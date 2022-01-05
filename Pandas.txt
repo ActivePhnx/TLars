@@ -18,12 +18,16 @@ https://www.govinfo.gov/link-docs/
 I NEED TO:
 Pull dates from HTML or File Name
 	Current date uses D = dt.date.today() - dt.timedelta(days=2)
+	DateTime Format and Methods 
+
 
 
 SQL db looks like:
 
 id  				html_data		UTC
 (INTEGER PRIMARY KEY)		(TEXT UNIQUE)		(DATE)
+
+
 
 
 crec_scraper.py:
