@@ -1,0 +1,12 @@
+
+bigram-frequency analysis
+SQlite database using Pandas: https://datacarpentry.org/python-ecology-lesson/09-working-with-sql/index.html
+
+
+
+
+crec_analysis.py Begin here:
+
+Query words from bigram analysis of Keywords
+
+

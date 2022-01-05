@@ -14,8 +14,23 @@ https://github.com/usgpo/link-service
 https://www.govinfo.gov/link-docs/
 
 
+
+I NEED TO:
+Pull dates from HTML or File Name
+	Current date uses D = dt.date.today() - dt.timedelta(days=2)
+
+
+SQL db looks like:
+
+id  				html_data		UTC
+(INTEGER PRIMARY KEY)		(TEXT UNIQUE)		(DATE)
+
+
 crec_scraper.py:
 
+	Request URL: https://www.govinfo.gov/link/crec/latest?link-type=zip&publishdate=2022-01-03
+		// Just change datetime
+		
 	// One Day at a time
 	// Run this script in loop to get historical data
 	// lxml HTML -- https://lxml.de/parsing.html    (Might Not be needed as HTML data is abstant
