@@ -17,14 +17,16 @@ https://www.govinfo.gov/link-docs/
 
 I NEED TO:
 Pull dates from HTML or File Name
-	Current date uses D = dt.date.today() - dt.timedelta(days=2)
-	DateTime Format and Methods 
+	Current date uses D = dt.date.today() - dt.timedelta(days=2)  -- Done
+	DateTime Format and Methods -- Done
+
+	Error 503 - Blocks of days where the server has no information to give me
 
 
 
 SQL db looks like:
 
-id  				html_data		UTC
+id  						html_data			UTC
 (INTEGER PRIMARY KEY)		(TEXT UNIQUE)		(DATE)
 
 
