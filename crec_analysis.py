@@ -9,9 +9,10 @@ import numpy as np
 
 
 CON = sqlite3.connect(os.path.expanduser(
-    "~/projects/archives/congressional_record/crec.db"))
+    "C:\GitHub\TLars\crec.db"))
 
 CUR = CON.cursor()
+
 
 MAIN_KEYWORD = r'climate\schange|global\swarming' # Reduce full db to keywords
 
@@ -32,8 +33,9 @@ def df_main():
     """Pull full database into dataframe"""
     crec_df = pd.read_sql("Select * from crec", CON, index_col='UTC')
     crec_df['html_data'] = crec_df['html_data'].str.replace('\n', ' ')
-    crec_df = crec_df.set_index(pd.DatetimeIndex(crec_df.index)).ix[:'2016-12-31'] # Control date range of df
+    crec_df = crec_df.set_index(pd.DatetimeIndex(crec_df.index)).loc[:'2021-12-31'] # (End Date?) Control date range of df
     return crec_df
+
 
 def df_reduce():
     """Pull database reduced by MAIN_KEYWORD into dataframe"""
@@ -55,7 +57,7 @@ def df_map():
     for chunk in pd.read_sql("Select * from crec", CON, index_col='UTC',
                              chunksize=1000):
         chunk['html_data'] = chunk['html_data'].str.replace('\n', ' ')
-        chunk = chunk.set_index(pd.DatetimeIndex(chunk.index)).ix[:'2016-12-31']
+        chunk = chunk.set_index(pd.DatetimeIndex(chunk.index)).loc[:'2021-12-31']
         chunk = chunk[chunk.html_data.str.contains(MAIN_KEYWORD)]
 
         query1_list.append(pd.DataFrame(index=chunk.index,
@@ -284,3 +286,9 @@ def plot_frame():
     autolabel_ratios(plot3)
 
     fig_bw.savefig('fig_bw.png')
+
+df_main()
+df_reduce()
+df_map()
+total_ratio()
+plot_frame()
