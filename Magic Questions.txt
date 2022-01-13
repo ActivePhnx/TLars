@@ -1,8 +1,9 @@
 
 
 Bigram Analysis - Is it for words before and after keyword? 
+	How did you do it? (No included script)
 
 
 crec_scraper.py
 
-	Why is D todays date - 2 days
+	Why is D todays date -(minus sign) 2 days
