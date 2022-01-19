@@ -13,6 +13,9 @@ https://www.govinfo.gov/features/api
 https://github.com/usgpo/link-service
 https://www.govinfo.gov/link-docs/
 
+Pandas to ngrams:
+https://towardsdatascience.com/from-dataframe-to-n-grams-e34e29df3460
+https://www.analyticsvidhya.com/blog/2021/09/what-are-n-grams-and-how-to-implement-them-in-python/
 
 
 I NEED TO:
