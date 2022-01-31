@@ -14,7 +14,7 @@ def get_html_text(date):
     print(date)
     thing = "https://www.govinfo.gov/link/crec/latest?link-type=zip&publishdate=" + date
     print(thing.format(date))
-    r = requests.get(thing.format(date))
+    r = requests.get(thing.format(date)) #Don't think I need .format() clause
     print(r.status_code)
     if r.status_code == 404 or r.status_code == 400:
         r.raise_for_status()
@@ -24,7 +24,11 @@ def get_html_text(date):
         r.raise_for_status()
     else:
         zip_content = io.BytesIO(r.content)
-        zip_list = zipfile.ZipFile(zip_content).namelist()
+        try:
+            zip_list = zipfile.ZipFile(zip_content).namelist()
+        except zipfile.BadZipFile:
+            add_to_error(date)
+            r.raise_for_status()
         zip_read = []
         for i in zip_list:
             if ".htm" in i:

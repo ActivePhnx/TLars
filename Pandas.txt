@@ -1,11 +1,17 @@
-Code:
+Total DB: 153640 Documents
+Reduced DB: 1921 Documents
+
+
+
+
+Orignial Code:
 https://osf.io/ax5q7/
 
-Paper:
+Original Paper:
 https://www.tandfonline.com/doi/full/10.1080/10572252.2019.1601774
 
 
-API Key:
+API Key: (Not Needed)
 tYnDbpDQK4gN2noz8LA5faR31djqNo7tgiKObIkN
 
 GovInfo API:
@@ -16,6 +22,16 @@ https://www.govinfo.gov/link-docs/
 Pandas to ngrams:
 https://towardsdatascience.com/from-dataframe-to-n-grams-e34e29df3460
 https://www.analyticsvidhya.com/blog/2021/09/what-are-n-grams-and-how-to-implement-them-in-python/
+	STEP 5
+Documentation: https://www.kite.com/python/docs/nltk.ngrams
+Of Specific Word: https://stackoverflow.com/questions/45428022/find-all-the-n-grams-that-contain-a-certain-word-efficiently
+From Pandas dataframe
+	https://skeptric.com/ngram-python/
+Clean data
+	https://stackoverflow.com/questions/47947438/preprocessing-string-data-in-pandas-dataframe
+	
+
+
 
 
 I NEED TO:
