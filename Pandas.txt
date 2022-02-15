@@ -29,7 +29,9 @@ From Pandas dataframe
 	https://skeptric.com/ngram-python/
 Clean data
 	https://stackoverflow.com/questions/47947438/preprocessing-string-data-in-pandas-dataframe
-	
+NLTK Punkt_tokenizer_pickle
+	https://www.nltk.org/_modules/nltk/tokenize/punkt.html
+
 
 
 
