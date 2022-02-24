@@ -21,7 +21,7 @@ QUERY2 = r'\b(climate\schange|global\swarming)\W+(?:\w+\W+){0,150}?((examine|exa
 QUERY2_DESC = 'Passive-agentic framing'
 
 QUERY3 = r'\b(climate\schange|global\swarming)\W+(?:\w+\W+){0,150}?(man-made|anthropogenic|human-caused|cause(d|s)?)|(man-made|anthropogenic|human-caused|cause(d)?)\W+(?:\w+\W+){0,150}?(climate\schange|global\swarming)\b'
-QUERY3_DESC = 'Denial-agentic framing'
+QUERY3_DESC = 'Agentic ratio/human agency foregrounded/culpability foregrounded'
 
 QUERY4 = r'\b(climate\schange|global\swarming)\W+(?:\w+\W+){0,150}?(nature|natural|cycle|cyclical|slow)|(nature|natural|cycle|cyclical|slow)\W+(?:\w+\W+){0,150}?(climate\schange|global\swarming)\b'
 QUERY4_DESC = 'Scenic ratio/nature foregrounded/culpability backgrounded'
@@ -88,39 +88,27 @@ def plot_frame():
 
     active_frame = []
     passive_frame = []
-    denial_frame = []
-    active_passive_frame = ([])
-    active_denial_frame = ([])
-    passive_denial_frame = ([])
+    ratio_list_frame = ([])
     for i in plot1_data.groupby(lambda x:x.year).sum().iterrows():
         active_frame.append(i[1].values)
     for i in plot2_data.groupby(lambda x:x.year).sum().iterrows():
         passive_frame.append(i[1].values)
-    for i in plot3_data.groupby(lambda x:x.year).sum().iterrows():
-        denial_frame.append(i[1].values)
     for ac, pa in zip(active_frame, passive_frame):
-        active_passive_frame.append(ac/pa)
-    for ac, pa in zip(active_frame, passive_frame):
-        active_denial_frame.append(ac/pa)
-    for ac, pa in zip(active_frame, passive_frame):
-        passive_denial_frame.append(ac/pa)
-    round_active_passive_ratio = [round(float(elem),3) for elem in
-            active_passive_frame]
-    round_active_denial_ratio = [round(float(elem),3) for elem in
-            active_denial_frame]
-    round_passive_denial_ratio = [round(float(elem),3) for elem in
-            passive_denial_frame]
-    """Put new ratios here!!"""
-    """
+        ratio_list_frame.append(ac/pa)
+    rounded_ratiolist_frame = [round(float(elem),3) for elem in
+            ratio_list_frame]
+
+    active_ratio = []
     passive_ratio = []
     ratio_list_ratio = ([])
-    
+    for i in plot3_data.groupby(lambda x:x.year).sum().iterrows():
+        active_ratio.append(i[1].values)
     for i in plot4_data.groupby(lambda x:x.year).sum().iterrows():
         passive_ratio.append(i[1].values)
     for ac, pa in zip(active_ratio, passive_ratio):
         ratio_list_ratio.append(ac/pa)
     rounded_ratiolist_ratio = [round(float(elem),3) for elem in
-            ratio_list_ratio]"""
+            ratio_list_ratio]
 
     fig = plt.figure(figsize=(13,15))
 
@@ -134,13 +122,8 @@ def plot_frame():
     plot1 = plt.bar(np.unique(plot1_data.index.year),
                     plot1_data['html_data'].groupby(lambda x: x.year).sum(),
                     alpha=0.7, color="#FF5500", width=.4, align='edge')
-    plot3 = plt.bar(np.unique(plot3_data.index.year),
-                    plot3_data['html_data'].groupby(lambda x: x.year).sum(),
-                    alpha=0.7, color="#834173", width=.4, align='edge')
-    plt.legend((plot1, plot2, plot3, (plot1, plot2, plot3)), (QUERY1_DESC, QUERY2_DESC, QUERY3_DESC, 'Corpus-wide active/passive = {}'.format(
-        round(sum(round_active_passive_ratio) / len(round_active_passive_ratio), 3)), 'Corpus-wide active/denial = {}'.format(
-        round(sum(round_active_denial_ratio) / len(round_active_denial_ratio), 3)), 'Corpus-wide passive/denial = {}'.format(
-        round(sum(round_passive_denial_ratio) / len(round_passive_denial_ratio), 3))), loc=2, fontsize=17)
+    plt.legend((plot1, plot2, (plot1, plot2)), (QUERY1_DESC, QUERY2_DESC, 'Corpus-wide active/passive = {}'.format(
+        round(sum(rounded_ratiolist_frame) / len(rounded_ratiolist_frame), 3))), loc=2, fontsize=17)
 
     ax1.annotate('', xy=(1995, -79), xytext=(2000, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
                  annotation_clip=False)
@@ -168,29 +151,49 @@ def plot_frame():
 
     ax1.annotate('', xy=(1997.5, 140), xytext=(1996.5, 190), arrowprops=dict(arrowstyle='->', facecolor='black'),
                  annotation_clip=False)
+    ax1.annotate('Kyoto protocol adopted', xy=(1995, 210), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2005, 360), xytext=(2004, 410), arrowprops=dict(arrowstyle='->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('Kyoto protocol goes into effect', xy=(2002.5, 430), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2006, 140), xytext=(2006, 190), arrowprops=dict(arrowstyle='->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('H.R. \n 5642', xy=(2006, 210), ha='center', annotation_clip=False)
 
     def autolabel_frames(rects):
         """
         Attach a text label above each bar displaying its height
         """
-        for rect,item in zip(rects, round_active_passive_ratio):
+        for rect,item in zip(rects, rounded_ratiolist_frame):
             height = rect.get_height()
             ax1.text(rect.get_x() + rect.get_width()/2., 1.50+height,
                     item,
                     ha='center', va='bottom')
     autolabel_frames(plot2)
 
+    ax2 = plt.subplot(212)
+    ax2.set_xlabel('Year', fontweight='bold')
+    ax2.set_ylabel('Frequency', fontweight='bold')
+    ax2.set_title('Pentadic Ratios in the Congressional Record', fontweight='bold', pad=15)
+    plot4 = plt.bar(np.unique(plot4_data.index.year),
+                    plot4_data['html_data'].groupby(lambda x: x.year).sum(),
+                    alpha=0.5, color="#6495ED")
+    plot3 = plt.bar(np.unique(plot3_data.index.year),
+                    plot3_data['html_data'].groupby(lambda x: x.year).sum(),
+                    alpha=0.7, color="#FF5500", width=.4, align='edge')
+    plt.legend((plot3, plot4), (QUERY3_DESC, QUERY4_DESC), loc=2, fontsize=17)
 
     def autolabel_ratios(rects):
         """
         Attach a text label above each bar displaying its height
         """
-        for rect,item in zip(rects, round_active_passive_ratio):
+        for rect,item in zip(rects, rounded_ratiolist_ratio):
             height = rect.get_height()
             ax2.text(rect.get_x() + rect.get_width()/2., 1.50+height,
                     item,
                     ha='center', va='bottom')
-    #autolabel_ratios(plot4)
+    autolabel_ratios(plot4)
 
     fig.savefig('fig.png')
 
@@ -207,19 +210,50 @@ def plot_frame():
     plot2 = plt.bar(np.unique(plot2_data.index.year),
             plot2_data['html_data'].groupby(lambda x:x.year).sum(),
             alpha=0.5, color="#a8a8a8")
-    plot2 = plt.bar(np.unique(plot3_data.index.year),
-            plot2_data['html_data'].groupby(lambda x:x.year).sum(),
-            alpha=0.5, color="#429E9A")
-    plt.legend((plot1, plot2, plot3, (plot1, plot2, plot3)), (QUERY1_DESC, QUERY2_DESC, QUERY3_DESC, 'Corpus-wide active/passive = {}'.format(
-        round(sum(round_active_passive_ratio) / len(round_active_passive_ratio), 3)), 'Corpus-wide active/denial = {}'.format(
-        round(sum(round_active_denial_ratio) / len(round_active_denial_ratio), 3)), 'Corpus-wide passive/denial = {}'.format(
-        round(sum(round_passive_denial_ratio) / len(round_passive_denial_ratio), 3))), loc=2, fontsize=17)
-    
+    plt.legend((plot1, plot2, (plot1, plot2)), (QUERY1_DESC, QUERY2_DESC, 'Corpus-wide active/passive = {}'.format(
+        round(sum(rounded_ratiolist_frame) / len(rounded_ratiolist_frame), 3))), loc=2, fontsize=17)
+
+    ax1.annotate('', xy=(1995, -79), xytext=(2000, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('R. control', xy=(1997.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2001, -79), xytext=(2002, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('D. control*', xy=(2001.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2003, -79), xytext=(2006, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('R. control', xy=(2004.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2007, -79), xytext=(2010, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('D. control', xy=(2008.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2011, -79), xytext=(2014, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('Split control', xy=(2012.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2015, -79), xytext=(2016, -79), arrowprops=dict(arrowstyle='<->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('R. control', xy=(2015.5, -109), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(1997.5, 140), xytext=(1996.5, 190), arrowprops=dict(arrowstyle='->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('Kyoto protocol adopted', xy=(1995, 210), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2005, 360), xytext=(2004, 410), arrowprops=dict(arrowstyle='->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('Kyoto protocol goes into effect', xy=(2002.5, 430), ha='center', annotation_clip=False)
+
+    ax1.annotate('', xy=(2006, 140), xytext=(2006, 190), arrowprops=dict(arrowstyle='->', facecolor='black'),
+                 annotation_clip=False)
+    ax1.annotate('H.R. \n 5642', xy=(2006, 210), ha='center', annotation_clip=False)
+
     def autolabel_frames(rects):
         """
         Attach a text label above each bar displaying its height
         """
-        for rect,item in zip(rects, round_active_passive_ratio):
+        for rect,item in zip(rects, rounded_ratiolist_frame):
             height = rect.get_height()
             ax1.text(rect.get_x() + rect.get_width()/2., 1.50+height,
                     item,
@@ -242,7 +276,7 @@ def plot_frame():
         """
         Attach a text label above each bar displaying its height
         """
-        for rect,item in zip(rects, round_active_passive_ratio):
+        for rect,item in zip(rects, rounded_ratiolist_ratio):
             height = rect.get_height()
             ax2.text(rect.get_x() + rect.get_width()/2., 1.50+height,
                     item,

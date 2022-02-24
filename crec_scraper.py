@@ -9,12 +9,12 @@ import time
 
 #D = dt.date.today() - dt.timedelta(days=2)
 
-
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 def get_html_text(date):
     print(date)
     thing = "https://www.govinfo.gov/link/crec/latest?link-type=zip&publishdate=" + date
     print(thing.format(date))
-    r = requests.get(thing.format(date)) #Don't think I need .format() clause
+    r = requests.get(thing.format(date), headers=headers) #Don't think I need .format() clause
     print(r.status_code)
     if r.status_code == 404 or r.status_code == 400:
         r.raise_for_status()
@@ -84,7 +84,7 @@ for y in range(6):
                     day = "0" + day
 
                 get_html_text(year + "-" + month + "-" + day)
-                time.sleep(.1)
+                time.sleep(.8)
             except requests.HTTPError:
                pass
 
