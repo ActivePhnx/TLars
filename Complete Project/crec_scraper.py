@@ -1,16 +1,12 @@
 import requests
 import zipfile
 import datetime as dt
-import pandas as pd
 import io
 import lxml.html as html
 import sqlite3
 import time
 
-conn = sqlite3.connect('crec.db')
-cur = conn.cursor()
 
-df = pd.DataFrame(columns=['html_data', 'UTC DATE'])
 #D = dt.date.today() - dt.timedelta(days=2)
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -39,10 +35,12 @@ def get_html_text(date):
                 zip_read.append(zipfile.ZipFile(zip_content).read(str(i)))
         for i in range(len(zip_read)):
             html_data = html.fromstring(zip_read[i]).text_content()
-            df.concat([html_data, date])
+            add_to_db(html_data, date)
 
 
 def add_to_db(html_data, date):
+    conn = sqlite3.connect('crec.db')
+    cur = conn.cursor()
 
     cur.execute('''CREATE TABLE if not exists crec
                 (id INTEGER PRIMARY KEY, html_data TEXT UNIQUE,
@@ -90,7 +88,7 @@ for y in range(6):
             except requests.HTTPError:
                pass
 
-df.to_sql('crec', conn, if_exists='replace')
+
 
 """ Testing Error db
 for y in range(6):
